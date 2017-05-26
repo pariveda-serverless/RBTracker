@@ -1,12 +1,11 @@
-service: santaswap-api
+service: ractivitytracker-api
 
 provider:
   name: aws
   runtime: nodejs4.3
   stage: local
   environment:
-    GROUPS_TABLE: { Ref: GroupsTable }
-    GROUPS_TABLE_CODE_INDEX: GroupCode
+    ACTIVITIES_TABLE: { Ref: ActivitiesTable }
     STAGE: ${opt:stage, self:provider.stage}
   iamRoleStatements:
     - Effect: Allow
@@ -20,7 +19,7 @@ provider:
             - ':'
             - Ref: AWS::AccountId
             - ':table/'
-            - Ref: GroupsTable
+            - Ref: ActivitiesTable
             - '*'
     - Effect: Allow
       Action:
@@ -74,7 +73,7 @@ resources:
 
   Outputs:
 
-    GroupsTable:
+    ActivitiesTable:
       Description: Name of the Activities table for the ${opt:stage, self:provider.stage} stage
       Value: { Ref: ActivitiesTable }
       Export:
