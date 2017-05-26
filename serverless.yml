@@ -28,69 +28,21 @@ provider:
       Resource: '*'
 
 functions:
-  
-  createAndJoin:
-    handler: groups/createAndJoin.handler
+
+  postMessage:
+    handler: functions/postMessage.handler
     events:
       - http:
-          path: groups
-          method: post
-          cors: true
-  
-  updateGroup:
-    handler: groups/updateGroup.handler
-    events:
-      - http:
-          path: groups/{groupId}
-          method: put
-          cors: true
-  
-  listByPerson:
-    handler: groups/listByPerson.handler
-    events:
-      - http:
-          path: people/{personId}/groups
-          method: get
-          cors: true
-  
-  get:
-    handler: groups/get.handler
-    events:
-      - http:
-          path: groups/{groupId}
-          method: get
-          cors: true
-  
-  query:
-    handler: groups/query.handler
-    events:
-      - http:
-          path: groups
-          method: get
-          cors: true
-  
-  join:
-    handler: groups/join.handler
-    events:
-      - http:
-          path: groups/{groupId}/profiles
+          path: functions
           method: post
           cors: true
 
-  invite:
-    handler: groups/invite.handler
+  getMessage:
+    handler: functions/getMessage.handler
     events:
       - http:
-          path: groups/{groupId}/invite
-          method: post
-          cors: true
-  
-  updateProfile:
-    handler: groups/updateProfile.handler
-    events:
-      - http:
-          path: groups/{groupId}/profiles/{profileId}
-          method: put
+          path: functions
+          method: get
           cors: true
 
 resources:
@@ -101,27 +53,21 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: groupId
+          - AttributeName: activityId
             AttributeType: S
-          - AttributeName: type
+          - AttributeName: activityDate
             AttributeType: S
-          - AttributeName: code
+          - AttributeName: activitySource
+            AttributeType: S
+          - AttributeName: activityWith
+            AttributeType: S
+          - AttributeName: activityType
             AttributeType: S
         KeySchema:
-          - AttributeName: groupId
+          - AttributeName: activityId
             KeyType: HASH
-          - AttributeName: type
+          - AttributeName: activityDate
             KeyType: RANGE
-        GlobalSecondaryIndexes:
-          - IndexName: ${self:provider.environment.GROUPS_TABLE_CODE_INDEX}
-            KeySchema:
-              - AttributeName: code
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
@@ -129,7 +75,7 @@ resources:
   Outputs:
 
     GroupsTable:
-      Description: Name of the Groups table for the ${opt:stage, self:provider.stage} stage
-      Value: { Ref: GroupsTable }
+      Description: Name of the Activities table for the ${opt:stage, self:provider.stage} stage
+      Value: { Ref: ActivitiesTable }
       Export:
-        Name: ${opt:stage, self:provider.stage}-GroupsTable
+        Name: ${opt:stage, self:provider.stage}-ActivitiesTable
