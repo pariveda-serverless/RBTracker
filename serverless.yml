@@ -1,4 +1,4 @@
-service: ractivitytracker-api
+service: ractivitytracker
 
 provider:
   name: aws
@@ -48,7 +48,7 @@ resources:
 
   Resources:
 
-    GroupsTable:
+    ActivitiesTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
@@ -56,12 +56,12 @@ resources:
             AttributeType: S
           - AttributeName: activityDate
             AttributeType: S
-          - AttributeName: activitySource
-            AttributeType: S
-          - AttributeName: activityWith
-            AttributeType: S
-          - AttributeName: activityType
-            AttributeType: S
+          # - AttributeName: activitySource
+          #   AttributeType: S
+          # - AttributeName: activityWith
+          #   AttributeType: S
+          # - AttributeName: activityType
+          #   AttributeType: S
         KeySchema:
           - AttributeName: activityId
             KeyType: HASH

@@ -1,28 +1,23 @@
-// create an IAM Lambda role with access to dynamodb
-// Launch Lambda in the same region as your dynamodb region
-// (here: us-east-1)
-// dynamodb table with hash key = user and range key = datetime
-
 console.log('Loading event');
 var AWS = require('aws-sdk');
-var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+var docs = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
 
 exports.handler = function(event, context) {
     console.log(JSON.stringify(event, null, '  '));
-    dynamodb.listTables(function(err, data) {
+    docs.listTables(function(err, data) {
       console.log(JSON.stringify(data, null, '  '));
     });
 
-    var tableName = "chat";
+    var tableName = "ActivitiesTable";
     var datetime = new Date().getTime().toString();
 
-    dynamodb.putItem({
+    dynamodbDocClient.put({
         "TableName": ActivitiesTable,
         "Item" : {
-            "activityDate": {"S": datetime },
-            "activitySource": {"S": ""},
-            "activityWith": {"S": ""},
-            "activityType": {"S": ""}
+            "activityDate": {"S": event.body.activityDate },
+            "activitySource": {"S": event.body.activitySource},
+            "activityWith": {"S": event.body.activityWith},
+            "activityType": {"S": event.body.activityType}
         }
     }, function(err, data) {
         if (err) {
@@ -30,7 +25,6 @@ exports.handler = function(event, context) {
         }
         else {
             console.log('great success: '+JSON.stringify(data, null, '  '));
-            context.done('K THX BY');
         }
     });
 };
