@@ -51,6 +51,7 @@ resources:
     ActivitiesTable:
       Type: AWS::DynamoDB::Table
       Properties:
+        TableName: RBActivities
         AttributeDefinitions:
           - AttributeName: activityId
             AttributeType: S
