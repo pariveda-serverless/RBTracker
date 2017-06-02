@@ -3,7 +3,7 @@ service: ractivitytracker
 provider:
   name: aws
   runtime: nodejs4.3
-  stage: local
+  stage: prod
   environment:
     ACTIVITIES_TABLE: { Ref: ActivitiesTable }
     STAGE: ${opt:stage, self:provider.stage}
@@ -57,12 +57,6 @@ resources:
             AttributeType: S
           - AttributeName: activityDate
             AttributeType: S
-          # - AttributeName: activitySource
-          #   AttributeType: S
-          # - AttributeName: activityWith
-          #   AttributeType: S
-          # - AttributeName: activityType
-          #   AttributeType: S
         KeySchema:
           - AttributeName: activityId
             KeyType: HASH
@@ -75,7 +69,7 @@ resources:
   Outputs:
 
     ActivitiesTable:
-      Description: Name of the Activities table for the ${opt:stage, self:provider.stage} stage
+      Description: Relationship Activity Tracker
       Value: { Ref: ActivitiesTable }
       Export:
         Name: ${opt:stage, self:provider.stage}-ActivitiesTable
