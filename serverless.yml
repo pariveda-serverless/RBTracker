@@ -21,10 +21,6 @@ provider:
             - ':table/'
             - Ref: ActivitiesTable
             - '*'
-    - Effect: Allow
-      Action:
-        - sns:Publish
-      Resource: '*'
 
 functions:
 
