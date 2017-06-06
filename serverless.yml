@@ -36,17 +36,19 @@ functions:
           method: post
           cors: true
 
-  getMessage:
-    handler: functions/getMessage.handler
+  dynoToCsv:
+    handler: functions/dynoToCsv.handler
     events:
       - http:
           path: functions
-          method: get
+          method: post
           cors: true
 
 resources:
 
   Resources:
+    BucketResource:
+      Type: "AWS::S3::Bucket"
 
     ActivitiesTable:
       Type: AWS::DynamoDB::Table

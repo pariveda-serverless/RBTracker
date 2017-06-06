@@ -1,6 +1,8 @@
 console.log('Loading function');
 var aws = require('aws-sdk');
 var ddb;
+const docs = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
+const helper = require('./helper');
 
 var theContext;
 

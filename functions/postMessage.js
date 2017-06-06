@@ -15,37 +15,40 @@ exports.handler = function(event, context, callback) {
     var body = event.body;
     var params = qs.parse(body);
     var requestToken = params.token;
-    var timeStamp = "" + new Date().getTime().toString();
-    var activityDate = new Date().toString();
-    var slackUserAuthorized = false; // We need to explicitly authorize the username in the payload from Slack.
-    //var body = JSON.parse(event.body);
 
     if (requestToken != token) {
         console.error("Request token (" + requestToken + ") does not match exptected token for Slack");
         context.fail("Invalid request token");
     }
 
-    //text=Test+Tester%2C+Meeting%2C+TestCompany
-    var slackValues = params.text.split('%2C');
-    slackValues = params.text.split(',');
+    if(params.text){
+      var slackValues = params.text.split('%2C');
+      slackValues = params.text.split(',');
 
-    docs.put({
-        "TableName": "RBActivities",
-        "Item" : {
-            "activityId": timeStamp,
-            "activityDate": activityDate,
-            "activitySource": params.user_name,
-            "activityWith": slackValues[0].toString(),
-            "activityType": slackValues[1].toString(),
-            "company": slackValues[2].toString()
-        }
-    }, function(err, data) {
-        if (err) {
-            callback(err + " " + body.timestamp, null);
-        }
-        else {
-            console.log('great success: '+JSON.stringify(data, null, '  '));
-            callback(null, 'success');
-        }
-    });
+      var timeStamp = "" + new Date().getTime().toString();
+      var activityDate = new Date().toString();
+      var activityWith = slackValues[0] !== null ? slackValues[0].toString() : "";
+      var company = slackValues[1] !== null ? slackValues[1].toString() : "";
+      var activityType =  slackValues[2] !== null ? slackValues[2].toString() : "";
+
+      docs.put({
+          "TableName": "RBActivities",
+          "Item" : {
+              "activityId": timeStamp,
+              "activityDate": activityDate,
+              "Who": params.user_name,
+              "With": activityWith,
+              "Company": company,
+              "Event": activityType
+          }
+      }, function(err, data) {
+          if (err) {
+              callback(err + " " + body.timestamp, null);
+          }
+          else {
+              console.log('great success: '+JSON.stringify(data, null, '  '));
+              callback(null, 'success');
+          }
+      });
+    }
 };
