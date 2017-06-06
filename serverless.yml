@@ -2,7 +2,7 @@ service: ractivitytracker
 
 provider:
   name: aws
-  runtime: nodejs4.3
+  runtime: nodejs6.10
   stage: prod
   environment:
     ACTIVITIES_TABLE: { Ref: ActivitiesTable }
@@ -28,7 +28,7 @@ functions:
     handler: functions/postMessage.handler
     events:
       - http:
-          path: functions
+          path: activities
           method: post
           cors: true
 
@@ -36,7 +36,7 @@ functions:
     handler: functions/getMessage.handler
     events:
       - http:
-          path: functions
+          path: activities
           method: get
           cors: true
 
