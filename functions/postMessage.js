@@ -1,7 +1,9 @@
 var AWS = require('aws-sdk');
 var docs = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
+var dynamo = new AWS.DynamoDB();
 var token = "uk4pWPlX1Q6LqelLK4b0q8QY";
-const dynamo = new AWS.DynamoDB();
+var qs = require('querystring');
+
 
 exports.handler = function(event, context, callback) {
     console.log(JSON.stringify(event, null, '  '));
@@ -10,25 +12,32 @@ exports.handler = function(event, context, callback) {
     });
 
     var tableName = "ActivitiesTable";
-    var body = JSON.parse(event.body);
+    var body = event.body;
+    var params = qs.parse(body);
+    var requestToken = params.token;
     var timeStamp = "" + new Date().getTime().toString();
     var activityDate = new Date().toString();
-    //var requestToken = params.token;
+    var slackUserAuthorized = false; // We need to explicitly authorize the username in the payload from Slack.
+    //var body = JSON.parse(event.body);
 
-    /*if (requestToken != token) {
+    if (requestToken != token) {
         console.error("Request token (" + requestToken + ") does not match exptected token for Slack");
         context.fail("Invalid request token");
-    }*/
+    }
+
+    //text=Test+Tester%2C+Meeting%2C+TestCompany
+    var slackValues = params.text.split('%2C');
+    slackValues = params.text.split(',');
 
     docs.put({
         "TableName": "RBActivities",
         "Item" : {
             "activityId": timeStamp,
             "activityDate": activityDate,
-            "activitySource": body.activitySource,
-            "activityWith": body.activityWith,
-            "activityType": body.activityType,
-            "company": body.company
+            "activitySource": params.user_name,
+            "activityWith": slackValues[0].toString(),
+            "activityType": slackValues[1].toString(),
+            "company": slackValues[2].toString()
         }
     }, function(err, data) {
         if (err) {
