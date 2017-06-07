@@ -17,3 +17,4 @@ var allActivities = documentClient.query(params, function(err, data) {
 var csv = json2csv({ data: allActivities, fields: fields });
 
 console.log(csv);
+ //
