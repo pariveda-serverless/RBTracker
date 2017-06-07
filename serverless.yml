@@ -2,7 +2,7 @@ service: ractivitytracker
 
 provider:
   name: aws
-  runtime: nodejs4.3
+  runtime: nodejs6.10
   stage: prod
   environment:
     ACTIVITIES_TABLE: { Ref: ActivitiesTable }
@@ -21,10 +21,6 @@ provider:
             - ':table/'
             - Ref: ActivitiesTable
             - '*'
-    - Effect: Allow
-      Action:
-        - sns:Publish
-      Resource: '*'
 
 functions:
 
@@ -32,7 +28,7 @@ functions:
     handler: functions/postMessage.handler
     events:
       - http:
-          path: functions
+          path: activities
           method: post
           cors: true
 
@@ -40,8 +36,13 @@ functions:
     handler: functions/dynoToCsv.handler
     events:
       - http:
+<<<<<<< HEAD
           path: functions
           method: post
+=======
+          path: activities
+          method: get
+>>>>>>> serverless-cleanup
           cors: true
 
 resources:
