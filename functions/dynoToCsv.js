@@ -6,15 +6,16 @@ var params = {
   TableName : 'RBActivities'
 };
 
-var documentClient = new AWS.DynamoDB.DocumentClient();
+exports.handler = function(event, context, callback) {
 
-var fields = ['activityDate', 'Company', 'Event', 'Who', 'With'];
-var allActivities = documentClient.query(params, function(err, data) {
-  if (err) console.log(err);
-  else console.log(data);
-});
+  var fields = ['activityDate', 'Company', 'Event', 'Who', 'With'];
+  var allActivities = docs.query(params, function(err, data) {
+    if (err) console.log(err);
+    else console.log(data);
+  });
 
-var csv = json2csv({ data: allActivities, fields: fields });
-
-console.log(csv);
- //
+  var csv = json2csv({ data: allActivities, fields: fields });
+  console.log("YO");
+  console.log(allActivities);
+  //console.log(csv);
+}
