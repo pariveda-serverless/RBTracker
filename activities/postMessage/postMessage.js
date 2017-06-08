@@ -6,21 +6,36 @@ var qs = require('querystring');
 
 exports.handler = function(event, context, callback) {
     console.log(JSON.stringify(event, null, '  '));
-    // dynamo.listTables(function(err, data) {
-    //   console.log(JSON.stringify(data, null, '  '));
-    // });
 
     var inputParams = qs.parse(event.body);
     var timestamp = "" + new Date().getTime().toString();
+    var requestToken = params.token;
+
+    if (requestToken != token) {
+        console.error("Request token (" + requestToken + ") does not match exptected token for Slack");
+        context.fail("Invalid request token");
+    }
+
+    var slackValues = params.text.split('%2C');
+    slackValues = params.text.split(',');
+
+    var activityDate = new Date().toString();
+    var activityWith = slackValues[0] !== null ? slackValues[0].toString() : "";
+    var company = slackValues[1] !== null ? slackValues[1].toString() : "";
+    var activityType =  slackValues[2] !== null ? slackValues[2].toString() : "";
 
     docs.put({
         TableName: process.env.ACTIVITIES_TABLE,
         Item : {
             timestamp: timestamp,
-            userName: inputParams.user_name,
-            channelName: inputParams.channel_name,
+            //channelName: inputParams.channel_name,
             rawText: inputParams.text,
-            responseURL: inputParams.response_url
+            //responseURL: inputParams.response_url,
+            userName: inputParams.user_name,
+            activityDate: activityDate,
+            With: activityWith,
+            Company: company,
+            EventType: activityType
         }
     }, function(err, data) {
         if (err) {
@@ -35,4 +50,5 @@ exports.handler = function(event, context, callback) {
             callback(null, response);
         }
     });
+
 };
