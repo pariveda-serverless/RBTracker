@@ -1,0 +1,53 @@
+{
+  "resource": "/functions",
+  "path": "/functions",
+  "httpMethod": "POST",
+  "headers": {
+    "Accept": "application/json,*/*",
+    "Accept-Encoding": "gzip,deflate",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "US",
+    "Content-Type": "application/x-www-form-urlencoded",
+    "Host": "o4tdhstu26.execute-api.us-east-1.amazonaws.com",
+    "User-Agent": "Slackbot 1.0 (+https://api.slack.com/robots)",
+    "Via": "1.1 a309987e837bea95a29acd044ce7a296.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "9o5TPcZRo5JqTi_NOgtPjmStCXwoHKmsteuygikqm9TeF96zbLhiXQ==",
+    "X-Amzn-Trace-Id": "Root=1-5931c2c1-79091a8268d723891d69aee2",
+    "X-Forwarded-For": "52.90.121.46, 54.239.145.55",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "queryStringParameters": null,
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+    "path": "/prod/functions",
+    "accountId": "207377804245",
+    "resourceId": "v2600o",
+    "stage": "prod",
+    "requestId": "77566d3f-47cd-11e7-bf92-8b028493fb94",
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "apiKey": "",
+      "sourceIp": "52.90.121.46",
+      "accessKey": null,
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "Slackbot 1.0 (+https://api.slack.com/robots)",
+      "user": null
+    },
+    "resourcePath": "/functions",
+    "httpMethod": "POST",
+    "apiId": "o4tdhstu26"
+  },
+  "body": "token=uk4pWPlX1Q6LqelLK4b0q8QY&team_id=T024F3C1G&team_domain=pariveda&channel_id=C5MK2VANT&channel_name=testbots&user_id=U1EJE8HEH&user_name=paul.sambolin&command=%2Frbactivity&text=Test+Tester%2C+Meeting%2C+TestCompany&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2FT024F3C1G%2F192176747301%2Fpn7Gb2AUIOnHFAqgi7AQxZ82",
+  "isBase64Encoded": false
+}

@@ -29,7 +29,7 @@ provider:
 functions:
 
   postMessage:
-    handler: functions/postMessage.handler
+    handler: activities/postMessage/postMessage.handler
     events:
       - http:
           path: functions
@@ -37,11 +37,16 @@ functions:
           cors: true
 
   dynoToCsv:
-    handler: functions/dynoToCsv.handler
+    handler: activities/dynoToCsv.handler
     events:
       - http:
+<<<<<<< HEAD
           path: functions
           method: post
+=======
+          path: activities
+          method: get
+>>>>>>> origin/master
           cors: true
 
 resources:
@@ -55,14 +60,14 @@ resources:
       Properties:
         TableName: Activities
         AttributeDefinitions:
-          - AttributeName: activityId
+          - AttributeName: timestamp
             AttributeType: S
-          - AttributeName: activityDate
+          - AttributeName: userName
             AttributeType: S
         KeySchema:
-          - AttributeName: activityId
+          - AttributeName: timestamp
             KeyType: HASH
-          - AttributeName: activityDate
+          - AttributeName: userName
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
