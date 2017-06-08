@@ -32,7 +32,7 @@ exports.handler = function(event, context, callback) {
       var activityType =  slackValues[2] !== null ? slackValues[2].toString() : "";
 
       docs.put({
-          TableName: 'RBActivities',
+          TableName: 'Activities',
           Item : {
               activityId: timeStamp,
               activityDate: activityDate,

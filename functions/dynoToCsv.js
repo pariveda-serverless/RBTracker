@@ -16,12 +16,11 @@ exports.handler = function(event, context, callback) {
   //};
 
   var params = {
-    TableName: 'RBActivities',
+    TableName: 'Activities',
     IndexName: 'Index',
-    KeyConditionExpression: 'HashKey = :hkey and RangeKey > :rkey',
+    KeyConditionExpression: 'HashKey > :hkey',
     ExpressionAttributeValues: {
-      ':hkey': 'key',
-      ':rkey': 2015
+      ':hkey': 0
     }
   };
 
