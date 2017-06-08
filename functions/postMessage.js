@@ -32,22 +32,27 @@ exports.handler = function(event, context, callback) {
       var activityType =  slackValues[2] !== null ? slackValues[2].toString() : "";
 
       docs.put({
-          "TableName": "RBActivities",
-          "Item" : {
-              "activityId": timeStamp,
-              "activityDate": activityDate,
-              "Who": params.user_name,
-              "With": activityWith,
-              "Company": company,
-              "Event": activityType
+          TableName: 'RBActivities',
+          Item : {
+              activityId: timeStamp,
+              activityDate: activityDate,
+              Who: params.user_name,
+              With: activityWith,
+              Company: company,
+              Event: activityType
           }
       }, function(err, data) {
+          const response = {
+              statusCode: 200,
+              body: JSON.stringify(data)
+          };
+
           if (err) {
               callback(err + " " + body.timestamp, null);
           }
           else {
               console.log('great success: '+JSON.stringify(data, null, '  '));
-              callback(null, 'success');
+              callback(null, response);
           }
       });
     }
