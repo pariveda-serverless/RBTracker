@@ -1,0 +1,15 @@
+{
+  "name": "postMessage",
+  "version": "0.0.1",
+  "description": "accecpts and processes incoming post messages from slack",
+  "main": "postMessage.js",
+  "scripts": {},
+  "repository": "https://github.com/ReltationshipBuildingTracker/RBTracker/blob/master/serverless.yml",
+  "author": "paulSambolin",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "aws-sdk": "^2.6.13",
+    "querystring": "^0.2.0"
+  }
+}

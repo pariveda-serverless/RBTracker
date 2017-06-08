@@ -25,7 +25,7 @@ provider:
 functions:
 
   postMessage:
-    handler: functions/postMessage.handler
+    handler: activities/postMessage/postMessage.handler
     events:
       - http:
           path: activities
@@ -33,7 +33,7 @@ functions:
           cors: true
 
   dynoToCsv:
-    handler: functions/dynoToCsv.handler
+    handler: activities/dynoToCsv.handler
     events:
       - http:
           path: activities
