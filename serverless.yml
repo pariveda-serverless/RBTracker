@@ -36,13 +36,8 @@ functions:
     handler: functions/dynoToCsv.handler
     events:
       - http:
-<<<<<<< HEAD
-          path: functions
-          method: post
-=======
           path: activities
           method: get
->>>>>>> serverless-cleanup
           cors: true
 
 resources:
