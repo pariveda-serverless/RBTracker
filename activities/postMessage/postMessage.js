@@ -6,23 +6,22 @@ const dynamo = new AWS.DynamoDB();
 
 exports.handler = function(event, context, callback) {
     console.log(JSON.stringify(event, null, '  '));
-    dynamo.listTables(function(err, data) {
-      console.log(JSON.stringify(data, null, '  '));
-    });
+    // dynamo.listTables(function(err, data) {
+    //   console.log(JSON.stringify(data, null, '  '));
+    // });
 
     var tableName = "RBActivities";
-    var body = event.body;
-    var inputParams = qs.parse(body);
+    var inputParams = qs.parse(event.body);
     var timestamp = "" + new Date().getTime().toString();
 
     docs.put({
         TableName: tableName,
         Item : {
-            activityId: timestamp,
-            activityDate: body.activityDate,
-            activitySource: body.activitySource,
-            activityWith: body.activityWith,
-            activityType: body.activityType
+            timestamp: timestamp,
+            userName: inputParams.user_name,
+            channelName: inputParams.channel_name,
+            rawText: inputParams.text,
+            responseURL: inputParams.response_url
         }
     }, function(err, data) {
         if (err) {

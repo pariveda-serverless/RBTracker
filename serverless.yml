@@ -51,14 +51,14 @@ resources:
       Properties:
         TableName: RBActivities
         AttributeDefinitions:
-          - AttributeName: activityId
+          - AttributeName: timestamp
             AttributeType: S
-          - AttributeName: activityDate
+          - AttributeName: userName
             AttributeType: S
         KeySchema:
-          - AttributeName: activityId
+          - AttributeName: timestamp
             KeyType: HASH
-          - AttributeName: activityDate
+          - AttributeName: userName
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
