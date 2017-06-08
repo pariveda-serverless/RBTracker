@@ -6,14 +6,9 @@ var json2csv = require('json2csv');
 exports.handler = function(event, context, callback) {
 
   var fields = ['activityDate', 'Company', 'Event', 'Who', 'With'];
-  var allActivities = docs.query(params, function(err, data) {
-    if (err) console.log(err);
-    else console.log(data);
-  });
-
   var params = {
     TableName: 'RBActivities',
-    IndexName: 'Index',
+    IndexName: 'timestamp',
     KeyConditionExpression: 'HashKey > :hkey',
     ExpressionAttributeValues: {
       ':hkey': 0
@@ -27,5 +22,6 @@ exports.handler = function(event, context, callback) {
         var csv = json2csv({ data: allActivities, fields: fields });
         console.log("YO");
         console.log(allActivities);
-  });
+      }
+   });
 }
