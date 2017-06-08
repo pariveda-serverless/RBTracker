@@ -21,6 +21,10 @@ provider:
             - ':table/'
             - Ref: ActivitiesTable
             - '*'
+    - Effect: Allow
+      Action:
+        - sns:Publish
+      Resource: '*'
 
 functions:
 
@@ -28,7 +32,7 @@ functions:
     handler: activities/postMessage/postMessage.handler
     events:
       - http:
-          path: activities
+          path: functions
           method: post
           cors: true
 
@@ -36,8 +40,13 @@ functions:
     handler: activities/dynoToCsv.handler
     events:
       - http:
+<<<<<<< HEAD
+          path: functions
+          method: post
+=======
           path: activities
           method: get
+>>>>>>> origin/master
           cors: true
 
 resources:
@@ -49,7 +58,7 @@ resources:
     ActivitiesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: RBActivities
+        TableName: Activities
         AttributeDefinitions:
           - AttributeName: timestamp
             AttributeType: S
