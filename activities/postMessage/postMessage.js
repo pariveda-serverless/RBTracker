@@ -9,15 +9,15 @@ exports.handler = function(event, context, callback) {
 
     var inputParams = qs.parse(event.body);
     var timestamp = "" + new Date().getTime().toString();
-    var requestToken = params.token;
+    var requestToken = inputParams.token;
 
     if (requestToken != token) {
         console.error("Request token (" + requestToken + ") does not match exptected token for Slack");
         context.fail("Invalid request token");
     }
 
-    var slackValues = params.text.split('%2C');
-    slackValues = params.text.split(',');
+    var slackValues = inputParams.text.split('%2C');
+    slackValues = inputParams.text.split(',');
 
     var activityDate = new Date().toString();
     var activityWith = slackValues[0] !== null ? slackValues[0].toString() : "";
