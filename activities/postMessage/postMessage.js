@@ -2,7 +2,7 @@ var AWS = require('aws-sdk');
 var docs = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
 var token = "uk4pWPlX1Q6LqelLK4b0q8QY";
 var qs = require('querystring');
-const dynamo = new AWS.DynamoDB();
+//const dynamo = new AWS.DynamoDB();
 
 exports.handler = function(event, context, callback) {
     console.log(JSON.stringify(event, null, '  '));
@@ -10,12 +10,11 @@ exports.handler = function(event, context, callback) {
     //   console.log(JSON.stringify(data, null, '  '));
     // });
 
-    var tableName = "RBActivities";
     var inputParams = qs.parse(event.body);
     var timestamp = "" + new Date().getTime().toString();
 
     docs.put({
-        TableName: tableName,
+        TableName: process.env.ACTIVITIES_TABLE,
         Item : {
             timestamp: timestamp,
             userName: inputParams.user_name,
