@@ -2,14 +2,18 @@ var AWS = require('aws-sdk');
 var docs = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
 var token = "uk4pWPlX1Q6LqelLK4b0q8QY";
 var qs = require('querystring');
-//const dynamo = new AWS.DynamoDB();
+var req = require('request');
 
-exports.handler = function(event, context, callback) {
+const encryptedSlackAuthToken = process.env['SLACK_APP_AUTH_TOKEN'];
+let decryptedSlackAuthToken;
+
+function processEvent(event, context, callback) {
     console.log(JSON.stringify(event, null, '  '));
 
     var inputParams = qs.parse(event.body);
     var timestamp = "" + new Date().getTime().toString();
     var requestToken = inputParams.token;
+    var slackUserId = inputParams.user_id;
 
     if (requestToken != token) {
         console.error("Request token (" + requestToken + ") does not match exptected token for Slack");
@@ -20,35 +24,70 @@ exports.handler = function(event, context, callback) {
     slackValues = inputParams.text.split(',');
 
     var activityDate = new Date().toString();
-    var activityWith = slackValues[0] !== null ? slackValues[0].toString() : "";
+    var contact = slackValues[0] !== null ? slackValues[0].toString() : "";
     var company = slackValues[1] !== null ? slackValues[1].toString() : "";
-    var activityType =  slackValues[2] !== null ? slackValues[2].toString() : "";
+    var event =  slackValues[2] !== null ? slackValues[2].toString() : "";
 
-    docs.put({
-        TableName: process.env.ACTIVITIES_TABLE,
-        Item : {
-            timestamp: timestamp,
-            //channelName: inputParams.channel_name,
-            rawText: inputParams.text,
-            //responseURL: inputParams.response_url,
-            userName: inputParams.user_name,
-            activityDate: activityDate,
-            With: activityWith,
-            Company: company,
-            EventType: activityType
+    // TODO RH: Retrieve cohort level from Slack API
+    req.post("https://slack.com/api/users.profile.get", {
+        auth: {
+            bearer: decryptedSlackAuthToken
+        },
+        form: {
+            token: decryptedSlackAuthToken,
+            user: slackUserId,
+            include_labels: false
         }
-    }, function(err, data) {
-        if (err) {
-            callback(err + " " + body.timestamp, null);
-        }
-        else {
-            console.log('great success: '+JSON.stringify(data, null, '  '));
-            var response = {
-                statusCode: 200,
-                body: JSON.stringify(data)
-            };
-            callback(null, response);
+    }, function(error, response, body) {
+        if(error){
+            callback("SLACK PROFILE RETRIEVAL ERROR - " + error, null);
+        } else {
+            var slackInfo = JSON.parse(response.body);
+            docs.put({
+                TableName: process.env.ACTIVITIES_TABLE,
+                Item : {
+                    timestamp: timestamp,
+                    userName: inputParams.user_name,
+                    name: slackInfo.profile.real_name,
+                    level: slackInfo.profile.fields.Xf1M339XQX.value, // Level
+                    office: slackInfo.profile.fields.Xf1LTXNG6P.value, // Office
+                    activityDate: activityDate,
+                    contact: contact,
+                    company: company,
+                    event: event,
+                    rawText: inputParams.text
+                }
+            }, function(err, data) {
+                if (err) {
+                    callback(err + " " + body.timestamp, null);
+                }
+                else {
+                    console.log('great success: '+JSON.stringify(data, null, '  '));
+                    var response = {
+                        statusCode: 200,
+                        body: JSON.stringify(data)
+                    };
+                    callback(null, response);
+                }
+            });
         }
     });
+}
 
+exports.handler = (event, context, callback) => {
+    if (decryptedSlackAuthToken) {
+        processEvent(event, context, callback);
+    } else {
+        // Decrypt code should run once and variables stored outside of the function
+        // handler so that these are decrypted once per container
+        const kms = new AWS.KMS();
+        kms.decrypt({ CiphertextBlob: new Buffer(encryptedSlackAuthToken, 'base64') }, (err, data) => {
+            if (err) {
+                console.log('Decrypt error:', err);
+                return callback(err);
+            }
+            decryptedSlackAuthToken = data.Plaintext.toString('ascii');
+            processEvent(event, context, callback);
+        });
+    }
 };

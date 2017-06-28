@@ -10,6 +10,7 @@
   "dependencies": {
     "aws-sdk": "^2.6.13",
     "querystring": "^0.2.0",
-    "serverless": "^1.15.1"
+    "serverless": "^1.15.1",
+    "request": "^2.81.0"
   }
 }
