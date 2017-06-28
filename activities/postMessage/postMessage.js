@@ -24,11 +24,10 @@ function processEvent(event, context, callback) {
     slackValues = inputParams.text.split(',');
 
     var activityDate = new Date().toString();
-    var contact = slackValues[0] !== null ? slackValues[0].toString() : "";
-    var company = slackValues[1] !== null ? slackValues[1].toString() : "";
-    var event =  slackValues[2] !== null ? slackValues[2].toString() : "";
+    var contact = (slackValues[0] !== null ? slackValues[0].toString() : "").trim();
+    var company = (slackValues[1] !== null ? slackValues[1].toString() : "").trim();
+    var event =  (slackValues[2] !== null ? slackValues[2].toString() : "").trim();
 
-    // TODO RH: Retrieve cohort level from Slack API
     req.post("https://slack.com/api/users.profile.get", {
         auth: {
             bearer: decryptedSlackAuthToken
@@ -62,10 +61,18 @@ function processEvent(event, context, callback) {
                     callback(err + " " + body.timestamp, null);
                 }
                 else {
-                    console.log('great success: '+JSON.stringify(data, null, '  '));
+                    var successMessage = {
+                        "response_type": "in_channel",
+                        "text": "*Fintastic!* Networking activity recorded." 
+                            + "\n*Fin*: " + slackInfo.profile.real_name 
+                            + "\n*Contact*: " + contact 
+                            + "\n*Company*: " + company 
+                            + "\n*Event*: " + event,
+                    };
+                    console.log('great success: ' + JSON.stringify(successMessage));
                     var response = {
                         statusCode: 200,
-                        body: JSON.stringify(data)
+                        body: JSON.stringify(successMessage)
                     };
                     callback(null, response);
                 }
