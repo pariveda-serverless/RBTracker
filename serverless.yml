@@ -7,6 +7,17 @@ provider:
   environment:
     ACTIVITIES_TABLE: { Ref: ActivitiesTable }
     STAGE: ${opt:stage, self:provider.stage}
+    # BOX_CLIENT_ID: "ifl7us8l6mxo3umbpey1cli0uhtmuqw2"
+    # BOX_PUBLIC_KEY_ID: "crbd7ln7"
+    # BOX_ENTERPRISE_ID: "421109"
+    # BOX_APP_USER_ID: "218687004"
+    # BOX_PARENT_FOLDER_ID: "30881990678"
+    # Encrypted
+    SLACK_APP_AUTH_TOKEN: "AQICAHiphwaraCGgj6ohEUfuC/UfixUrCCxJYZuPPj1NjdeEMwF2PFlcta/9TdthDFCq0Uk0AAAAqjCBpwYJKoZIhvcNAQcGoIGZMIGWAgEAMIGQBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDMN70PLliBZ6R08Q0gIBEIBjayD4rEe2pk46YlnLdSd0hCQKcY7Tr7QlyhgYOhJVeaXJ4TrV69Jbbwu9CEWbxopNP7zronas3FKuRSRB+QB1qpc+S1UUUBpKlWCjtZ5F+9h7wfuFZAM+GKCMZAeLNTgPMswg"
+    SLACK_BOT_AUTH_TOKEN: "AQICAHiphwaraCGgj6ohEUfuC/UfixUrCCxJYZuPPj1NjdeEMwG46srb9irftswHS5E87/hTAAAAiTCBhgYJKoZIhvcNAQcGoHkwdwIBADByBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDIZibFOX3+dHVDPJugIBEIBFglGXr1M08gHTlza69h/tpM52FGSZYtOClUsI9H0Gp2Y84dmCrnPZi26QkttMmSjJQRZKU0bn9u+ykiWO0MhelK+SoE5I"
+    # BOX_PASSPHRASE: "AQICAHiphwaraCGgj6ohEUfuC/UfixUrCCxJYZuPPj1NjdeEMwEkqcpcX7T+DsxLu7Qk3fB/AAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMU3rqIsy3cdAkycFeAgEQgDsO5JIU9tPTHHMB/g9Lev1JhcQamRlr+wexuLiYRu2LirIhC3Cb2E+eydaEysT8u46JSZKY36fLDmUOlA=="
+    # BOX_PRIVATE_KEY: "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"
+    # BOX_CLIENT_SECRET: "AQICAHiphwaraCGgj6ohEUfuC/UfixUrCCxJYZuPPj1NjdeEMwEkqcpcX7T+DsxLu7Qk3fB/AAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMU3rqIsy3cdAkycFeAgEQgDsO5JIU9tPTHHMB/g9Lev1JhcQamRlr+wexuLiYRu2LirIhC3Cb2E+eydaEysT8u46JSZKY36fLDmUOlA=="
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -33,11 +44,19 @@ functions:
           cors: true
 
   dynoToCsv:
-    handler: activities/dynoToCsv.handler
+    handler: activities/dynoToCsv/dynoToCsv.handler
     events:
       - http:
           path: activities
           method: get
+          cors: true
+
+  getData:
+    handler: activities/getData/getData.handler
+    events:
+      - http:
+          path: activityData
+          method: post
           cors: true
 
 resources:

@@ -11,6 +11,8 @@
   "dependencies": {
     "aws-sdk": "^2.6.13",
     "querystring": "^0.2.0",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "json2csv": "^3.7.3",
+    "box-node-sdk": "^1.6.0"
   }
 }

@@ -1,7 +1,8 @@
 {
-  "name": "RBTracker",
+  "name": "getData",
   "version": "0.0.1",
-  "description": "Pariveda's first CRM slackbot",
+  "description": "accecpts and processes incoming post messages from slack",
+  "main": "getData.js",
   "scripts": {},
   "repository": "https://github.com/ReltationshipBuildingTracker/RBTracker/blob/master/serverless.yml",
   "author": "paulSambolin",
@@ -10,8 +11,7 @@
   "dependencies": {
     "aws-sdk": "^2.6.13",
     "querystring": "^0.2.0",
-    "serverless": "^1.15.1",
     "request": "^2.81.0",
-    "box-node-sdk": "^1.6.0"
+    "json2csv": "^3.7.3"
   }
 }

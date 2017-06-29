@@ -7,11 +7,19 @@ var req = require('request');
 const encryptedSlackAuthToken = process.env['SLACK_APP_AUTH_TOKEN'];
 let decryptedSlackAuthToken;
 
+function getActivityDate() {
+    var dateObj = new Date();
+    var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
+    var day = ('0' + dateObj.getDate()).slice(-2);
+    var year = dateObj.getFullYear();
+    var timestamp = month + "/" + day + "/" + year;
+    return timestamp;
+}
+
 function processEvent(event, context, callback) {
     console.log(JSON.stringify(event, null, '  '));
 
     var inputParams = qs.parse(event.body);
-    var timestamp = "" + new Date().getTime().toString();
     var requestToken = inputParams.token;
     var slackUserId = inputParams.user_id;
 
@@ -42,15 +50,16 @@ function processEvent(event, context, callback) {
             callback("SLACK PROFILE RETRIEVAL ERROR - " + error, null);
         } else {
             var slackInfo = JSON.parse(response.body);
+            console.log('slack info', slackInfo);
             docs.put({
                 TableName: process.env.ACTIVITIES_TABLE,
                 Item : {
-                    timestamp: timestamp,
+                    timestamp: "" + new Date().getTime().toString(),
                     userName: inputParams.user_name,
                     name: slackInfo.profile.real_name,
                     level: slackInfo.profile.fields.Xf1M339XQX.value, // Level
                     office: slackInfo.profile.fields.Xf1LTXNG6P.value, // Office
-                    activityDate: activityDate,
+                    date: getActivityDate(),
                     contact: contact,
                     company: company,
                     event: event,
